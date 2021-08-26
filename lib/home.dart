@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'cocktail_page.dart';
+import 'loading_screen.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -50,8 +51,8 @@ class _HomeState extends State<Home> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return CocktailPage(
-                            cocktails: input,
+                          return LoadingScreen(
+                            ingredient: input,
                           );
                         },
                       ),

@@ -10,47 +10,14 @@ class CocktailPage extends StatefulWidget {
 }
 
 class _CocktailPageState extends State<CocktailPage> {
-  Cocktail cocktail = Cocktail();
   var cocktails;
-  var ingredient;
-  String title = '';
-  String url = '';
   List<Column> cocktailItems = [];
 
   @override
   void initState() {
     super.initState();
     // get a hold of the ingredient via the State
-    ingredient = widget.cocktails;
-    getCocktail();
-  }
-
-  void getCocktail() async {
-    if (ingredient != null) {
-      cocktails = await cocktail.cocktailSearch(ingredient);
-
-      // TODO: try loop
-      var cocktailList = cocktails['drinks'];
-      for (var i = 0; i < cocktailList.length; i++) {
-        print(cocktailList[i]['strDrink']);
-        print('------------');
-        print(cocktailList[i]['strDrinkThumb']);
-      }
-      //iterateJson(cocktailData);
-      updateUI(cocktails);
-    }
-  }
-
-  void updateUI(dynamic cocktailData) {
-    setState(() {
-      if (cocktailData == null) {
-        title = 'Unable to fetch data';
-        url = 'Unable to fetch data';
-      } else {
-        title = cocktailData['drinks'][0]['strDrink'];
-        url = cocktailData['drinks'][0]['strDrinkThumb'];
-      }
-    });
+    cocktails = widget.cocktails;
   }
 
   @override
@@ -59,10 +26,6 @@ class _CocktailPageState extends State<CocktailPage> {
         body: ListView(
       children: newCard(),
     ));
-
-    // return Column(
-    //   children: newCard(),
-    // );
   }
 
   List<Column> newCard() {
