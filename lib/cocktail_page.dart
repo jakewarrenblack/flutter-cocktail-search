@@ -1,5 +1,6 @@
 import 'package:cocktail_search/cocktail.dart';
 import 'package:flutter/material.dart';
+import 'home.dart';
 
 class CocktailPage extends StatefulWidget {
   CocktailPage({this.cocktails});
@@ -23,8 +24,31 @@ class _CocktailPageState extends State<CocktailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView(
-      children: newCard(),
+        body: SafeArea(
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topLeft,
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Home();
+                }));
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                size: 50.0,
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.all(20.0),
+              children: newCard(),
+            ),
+          ),
+        ],
+      ),
     ));
   }
 
