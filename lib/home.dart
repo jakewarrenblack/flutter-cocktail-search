@@ -1,6 +1,9 @@
+// the first page we see when the app runs, because main.dart's MaterialApp has a 'home' property of 'Home()', this Widget
+
 import 'package:flutter/material.dart';
 import 'cocktail_page.dart';
 import 'loading_screen.dart';
+import 'constants.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -8,7 +11,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // we'll pass our user input in here
   var input;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,8 +21,7 @@ class _HomeState extends State<Home> {
         decoration: BoxDecoration(
           image: DecorationImage(
             colorFilter: ColorFilter.mode(Colors.black54, BlendMode.darken),
-            image: NetworkImage(
-                'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.1802house.com%2Fwp-content%2Fuploads%2F2018%2F06%2Fcocktails-slide.jpg&f=1&nofb=1'),
+            image: NetworkImage(kBgImg),
             fit: BoxFit.cover,
           ),
         ),
@@ -31,20 +35,7 @@ class _HomeState extends State<Home> {
                   flex: 4,
                   child: TextField(
                     style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                            10.0,
-                          ),
-                        ),
-                      ),
-                      hintText: "Enter an ingredient e.g. 'vodka'",
-                      hintStyle: TextStyle(color: Colors.grey),
-                      filled: true,
-                      fillColor: Colors.white,
-                    ),
+                    decoration: kInputDecoration,
                     onChanged: (value) {
                       // pass the user input from the textfield to our empty 'input' variable
                       input = value;
@@ -56,11 +47,15 @@ class _HomeState extends State<Home> {
                   child: TextButton(
                     onPressed: () {
                       if (input != null) {
+                        // 'push' this route onto the Navigator
+                        // in the same way, this route can be 'popped' off from the navigator, it acts like a stack
                         Navigator.push(
                           context,
                           MaterialPageRoute(
+                            // the context here refers to this widget's BuildContext
                             builder: (context) {
                               return LoadingScreen(
+                                // passing our input text through to the LoadingScreen, the LoadingScreen Widget can access this through its State
                                 ingredient: input,
                               );
                             },
