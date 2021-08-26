@@ -26,6 +26,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       return CocktailPage(
         // passing jsonDecoded cocktail data
         cocktails: cocktails,
+        ingredient: ingredient,
       );
     }));
   }

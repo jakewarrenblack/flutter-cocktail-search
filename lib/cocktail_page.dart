@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 
 class CocktailPage extends StatefulWidget {
-  CocktailPage({this.cocktails});
+  CocktailPage({this.cocktails, this.ingredient});
   final cocktails;
+  final ingredient;
 
   @override
   _CocktailPageState createState() => _CocktailPageState();
@@ -12,6 +13,7 @@ class CocktailPage extends StatefulWidget {
 
 class _CocktailPageState extends State<CocktailPage> {
   var cocktails;
+  var ingredient;
   List<Column> cocktailItems = [];
 
   @override
@@ -19,6 +21,7 @@ class _CocktailPageState extends State<CocktailPage> {
     super.initState();
     // get a hold of the ingredient via the State
     cocktails = widget.cocktails;
+    ingredient = widget.ingredient;
   }
 
   @override
@@ -29,16 +32,28 @@ class _CocktailPageState extends State<CocktailPage> {
         children: [
           Align(
             alignment: Alignment.topLeft,
-            child: TextButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Home();
-                }));
-              },
-              child: Icon(
-                Icons.arrow_back_ios,
-                size: 50.0,
-              ),
+            child: Row(
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return Home();
+                    }));
+                  },
+                  child: Icon(
+                    Icons.arrow_back_ios,
+                    size: 50.0,
+                  ),
+                ),
+                Text('Cocktails using $ingredient',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.end),
+              ],
             ),
           ),
           Expanded(
