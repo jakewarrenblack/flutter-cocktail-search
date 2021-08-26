@@ -36,16 +36,21 @@ class _LoadingScreenState extends State<LoadingScreen> {
     // in this case, we use the 'await' keyword and 'async' modifier to make everything wait until cocktailSearch is finished
     var cocktails = await Cocktail().cocktailSearch(ingredient);
 
-    // 'await' has now made sure that the cocktailSearch() has finished
-    // we know at this point that we have our data, so we're ready to 'push' the next page onto the Navigator's 'stack'
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return CocktailPage(
-        // passing jsonDecoded cocktail data
-        // we've added 'cocktails' and 'ingredient' as attributes of CocktailPage to allow passing data through the Navigator
-        cocktails: cocktails,
-        ingredient: ingredient,
-      );
-    }));
+    if (cocktails != 'Something went wrong.') {
+      // 'await' has now made sure that the cocktailSearch() has finished
+      // we know at this point that we have our data, so we're ready to 'push' the next page onto the Navigator's 'stack'
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return CocktailPage(
+          // passing jsonDecoded cocktail data
+          // we've added 'cocktails' and 'ingredient' as attributes of CocktailPage to allow passing data through the Navigator
+          cocktails: cocktails,
+          ingredient: ingredient,
+        );
+      }));
+    } else {
+      // Something went wrong, just go back to the search page
+      Navigator.pop(context);
+    }
   }
 
   @override

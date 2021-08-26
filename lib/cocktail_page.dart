@@ -55,10 +55,14 @@ class _CocktailPageState extends State<CocktailPage> {
                     size: 50.0,
                   ),
                 ),
-                Text(
-                  'Cocktails using $ingredient',
-                  style: kCocktailStyle,
-                  textAlign: TextAlign.end,
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Cocktails using $ingredient',
+                      style: kCocktailStyle,
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
                 ),
               ],
             ),

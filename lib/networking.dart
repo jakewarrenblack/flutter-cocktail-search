@@ -18,14 +18,18 @@ class NetworkHelper {
     // so we use 'get(Uri.parse('example.com'))' instead of just 'get('example.com')
 
     // await = 'wait for the Future to be resolved (receive its data) before continuing, we *need* this response before we do anything else
-    http.Response response = await http.get(Uri.parse(url));
+    http.Response response = await http
+        .get(Uri.parse(url))
+        .timeout(Duration(seconds: 3), onTimeout: () {
+      return http.Response('Connection timed out.', 500);
+    });
     // status 200 = OK
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.body != "") {
       String data = response.body;
       // take the string we got from the server and turn it into a json object
       return jsonDecode(data);
     } else {
-      print(response.statusCode);
+      return 'Something went wrong.';
     }
   }
 }
