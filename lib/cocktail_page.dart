@@ -73,8 +73,24 @@ class _CocktailPageState extends State<CocktailPage> {
       String url = cocktailList[i]['strDrinkThumb'];
       var newItem = Column(
         children: <Widget>[
-          Text(title),
-          Image.network(url),
+          Center(
+            child: Text(title,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(height: 15.0),
+          Container(
+            height: 200,
+            width: 200,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage(url),
+                )),
+          ),
+          SizedBox(height: 25.0),
+          // Image.network(url),
         ],
       );
       cocktailItems.add(newItem);
