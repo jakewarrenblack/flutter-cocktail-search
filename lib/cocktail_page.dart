@@ -193,10 +193,10 @@ class _CocktailPageState extends State<CocktailPage> {
         children: <Widget>[
           Column(children: [
             // We just use SizedBox to create some vertical spacing
-            SizedBox(height: 15.0),
+            SizedBox(height: 5.0),
             Container(
-              height: 200,
-              width: 200,
+              height: 280,
+              width: 280,
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
@@ -204,17 +204,32 @@ class _CocktailPageState extends State<CocktailPage> {
                     image: NetworkImage(url),
                   )),
             ),
+            Divider(
+              height: 2.0,
+              color: Colors.white,
+            ),
+            SizedBox(height: 25.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 SizedBox(height: 25.0),
-                Column(
-                  children: [
-                    for (var ingredient in ingredientList) Text(ingredient)
-                  ],
+                Expanded(
+                  child: Column(
+                    children: [
+                      for (var ingredient in ingredientList)
+                        Text(ingredient, style: TextStyle(fontSize: 25.0))
+                    ],
+                  ),
                 ),
-                Column(
-                  children: [for (var measure in measureList) Text(measure)],
+                SizedBox(width: 25.0),
+                Expanded(
+                  child: Column(
+                    children: [
+                      for (var measure in measureList)
+                        Text(measure, style: TextStyle(fontSize: 25.0))
+                    ],
+                  ),
                 ),
               ],
             ),
