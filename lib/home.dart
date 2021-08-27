@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
         decoration: BoxDecoration(
           image: DecorationImage(
             colorFilter: ColorFilter.mode(Colors.black54, BlendMode.darken),
-            image: NetworkImage(kBgImg),
+            image: AssetImage(kBgImg),
             fit: BoxFit.cover,
           ),
         ),
