@@ -20,6 +20,6 @@ const kInputDecoration = InputDecoration(
 
 const kCocktailStyle = TextStyle(
   color: Colors.blue,
-  fontSize: 25.0,
+  fontSize: 28.0,
   fontWeight: FontWeight.bold,
 );
