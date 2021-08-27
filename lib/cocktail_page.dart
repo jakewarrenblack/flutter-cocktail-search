@@ -1,6 +1,8 @@
 // once we've reached this page, we know we have our data from the API
 // the data is passed from the loading_screen through the navigator
 
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'constants.dart';
@@ -12,7 +14,7 @@ class CocktailPage extends StatefulWidget {
   final cocktails;
   final ingredient;
   // Used as a boolean to know whether we're viewing all the cocktails, or a single cocktail
-  final singlePage;
+  final bool singlePage;
 
   @override
   _CocktailPageState createState() => _CocktailPageState();
@@ -21,7 +23,7 @@ class CocktailPage extends StatefulWidget {
 class _CocktailPageState extends State<CocktailPage> {
   var cocktails;
   var ingredient;
-  var singlePage;
+  bool singlePage = false;
   var cocktailTitle;
   List<Column> cocktailItems = [];
 
@@ -174,21 +176,65 @@ class _CocktailPageState extends State<CocktailPage> {
       String title = cocktailList[0]['strDrink'];
       cocktailTitle = title;
       String url = cocktailList[0]['strDrinkThumb'];
-      String idDrink = cocktailList[0]['idDrink'];
       List<String> ingredientList = [];
       List<String> measureList = [];
 
+      // create a list of all the ingredients and measures
       for (var j = 1; j <= 15; j++) {
         if (cocktailList[0]['strIngredient$j'] != null) {
           ingredientList.add(cocktailList[0]['strIngredient$j']);
         }
-      }
-
-      for (var j = 1; j <= 15; j++) {
         if (cocktailList[0]['strMeasure$j'] != null) {
           measureList.add(cocktailList[0]['strMeasure$j']);
         }
       }
+
+      int getLastChar(var list) {
+        // the key of each ingredient and measure will look like 'strIngredient1' or 'strMeasure1'
+        // we use this method to remove everything from that value but its number, this allows them to be sorted
+        return int.parse(list[list.length - 1]);
+      }
+
+      List getKeysAndValuesUsingEntries(LinkedHashMap map) {
+        List myList = [];
+
+        // looping through each value in the map provided by our jsonDecoded data from the api
+        map.entries.forEach((entry) {
+          // just get the name of the key without the number at the end
+          String entryStr = entry.key.substring(0, entry.key.length - 1);
+          if (entryStr == 'strIngredient' || entryStr == 'strMeasure') {
+            // now we've made a new list which only contains the keys and values we're interested in
+            if (entry.value != null) {
+              myList.add(entry);
+            }
+          }
+        });
+
+        // now that we have a list containing only the information that interests us,
+        // *and* we have a method to extract their numbers eg strIngredient1, strMeasure1, we can sort them numerically!
+
+        // .sort(a, b) will compare a/b in the list, so compare the key of index 0 and index 1, index 2 and index 3, etc
+        myList.sort((a, b) {
+          // this means we'll have our ingredients and their corresponding measures displayed in the right order in our GridView
+
+          /* eg:
+            vodka - 1oz
+            peach schnapps - 0.5oz
+            etc
+           */
+
+          var res1 = getLastChar(a.key);
+          var res2 = getLastChar(b.key);
+          return res1.compareTo(res2);
+        });
+
+        return myList;
+      }
+
+      List ingredientsAndMeasures = getKeysAndValuesUsingEntries(
+        cocktailList[0],
+      );
+
       var newItem = Column(
         children: <Widget>[
           Column(children: [
@@ -204,34 +250,25 @@ class _CocktailPageState extends State<CocktailPage> {
                     image: NetworkImage(url),
                   )),
             ),
-            Divider(
-              height: 2.0,
-              color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Divider(
+                height: 2.0,
+                color: Colors.white,
+              ),
             ),
-            SizedBox(height: 25.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                SizedBox(height: 25.0),
-                Expanded(
-                  child: Column(
-                    children: [
-                      for (var ingredient in ingredientList)
-                        Text(ingredient, style: TextStyle(fontSize: 25.0))
-                    ],
-                  ),
-                ),
-                SizedBox(width: 25.0),
-                Expanded(
-                  child: Column(
-                    children: [
-                      for (var measure in measureList)
-                        Text(measure, style: TextStyle(fontSize: 25.0))
-                    ],
-                  ),
-                ),
-              ],
+            GridView.count(
+              physics:
+                  NeverScrollableScrollPhysics(), // to disable GridView's scrolling, we have it nested within a ListView which can scroll on its own
+              shrinkWrap:
+                  true, // prevents infinite size error, also from being nested within a ListView
+              crossAxisCount: 2,
+              children: List.generate(ingredientsAndMeasures.length, (index) {
+                return Center(
+                  child: Text('${ingredientsAndMeasures[index].value}',
+                      style: TextStyle(fontSize: 24.0)),
+                );
+              }),
             ),
             SizedBox(height: 25.0),
           ])
