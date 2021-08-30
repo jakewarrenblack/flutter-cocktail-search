@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cocktail_search">
-   <application
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <application
         android:label="cocktail_search"
         android:icon="@mipmap/ic_launcher">
         <activity
